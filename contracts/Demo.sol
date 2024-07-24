@@ -10,15 +10,17 @@ contract Demo{
         public：合约外部可以访问该状态
         private：合约外部不能访问该状态
     */
-    uint256 private dataUint;
-    bool private dataBool;
-    string private dataString = "This is Demo";
+    uint256 public dataUint;
+    bool public dataBool;
+    string public dataString = "This is Demo";
     address public dataAddr = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
     bytes1 public dataByte = 0x66;
     // 常量：可以节约gas
     address public constant constAddr = 0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc;
     // immutable：可以在构造函数里赋值，构造完成后不能进一步修改
     address public immutable immutableAddr;
+
+    event logNewAlert(string description);
 
     // 构造函数
     // 函数参数为引用类型时必须要指定存储位置（memory，storage，calldata）
@@ -71,8 +73,9 @@ contract Demo{
         return block.timestamp;   // 访问全局变量
     }
 
-    
-
-
+    function finalFunction() public {
+        dataUint = 0;
+        emit logNewAlert("This is final function.");
+    }
 
 }
