@@ -20,6 +20,20 @@ contract Demo{
     // immutable：可以在构造函数里赋值，构造完成后不能进一步修改
     address public immutable immutableAddr;
 
+    // ether和wei（钱币单位），1 ether = 10(18) wei，solidity中单位是1 wei
+    uint256 public oneWei = 1 wei;
+    // 1 wei is equal to 1
+    bool public isOneWei = (oneWei == 1);
+    uint256 public oneGwei = 1 gwei;
+    // 1 gwei is equal to 10^9 gwei
+    bool public isOneGwei = (oneGwei == 1e9);
+    uint256 public oneEther = 1 ether;
+    // 1 ether is equal to 10^18 wei
+    bool public isOneEther = (oneEther == 1e18);   
+
+
+
+
     event logNewAlert(string description);
 
     // 构造函数
@@ -78,4 +92,77 @@ contract Demo{
         emit logNewAlert("This is final function.");
     }
 
+    // 所有改变状态的操作都会消耗gas
+    uint256 public stupidIdx = 0;
+    // Using up all of the gas that you send causes your transaction to fail.
+    // State changes are undone.
+    // Gas spent are not refunded.
+    function forever() public {
+        // Here we run a loop until all of the gas are spent
+        // and the transaction fails
+        while (true) {
+            stupidIdx += 1;
+        }
+    }
+
+    // if-else，continue，break，for，while都和C++一样
+    function ifelseFunc(uint256 x) public pure returns (uint256) {
+        if (x < 10) {
+            return 0;
+        } else if (x < 20) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    function ifelseFunc2(uint256 _x) public pure returns (uint256) {
+        return _x < 10 ? 1 : 2;  
+    }
+
+    function loopFunc() public pure {
+        // for loop
+        for (uint256 i = 0; i < 10; i++) {
+            if (i == 3) {
+                // Skip to next iteration with continue
+                continue;
+            }
+            if (i == 5) {
+                // Exit loop with break
+                break;
+            }
+        }
+
+        // while loop
+        uint256 j;
+        while (j < 10) {
+            j++;
+        }
+    }
+
+    // map：要用mapping来创建，mapping(keyType => valueType)
+    // The keyType can be any built-in value type, bytes, string, or any contract.
+    // valueType can be any type including another mapping or an array.
+    // Mappings are not iterable.
+    mapping(address => uint256) public myMap;  // 从地址到uint的map
+    mapping(address => mapping(uint256 => bool)) public myNestedMap; // 嵌套map 
+    function getMap(address _addr) public view returns (uint256) {
+        // Mapping always returns a value.
+        // If the value was never set, it will return the default value.
+        return myMap[_addr];
+    }
+
+    function setMap(address _addr, uint256 _i) public {
+        // Update the value at this address
+        myMap[_addr] = _i;
+    }
+
+    function removeMap(address _addr) public {
+        // Reset the value to the default value.
+        delete myMap[_addr];
+    }
+
+    
+
+    
 }
